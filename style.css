@@ -14,6 +14,32 @@ body {
     text-align: center;
 }
 
+.envelope-container {
+    text-align: center;
+    /* Menambahkan animasi yang sama dengan kartu agar muncul dengan mulus */
+    animation: fadeIn 1s ease-out forwards;
+}
+
+#openLetterButton {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #ffffff;
+    color: #e91e63;
+    border: 2px solid #e91e63;
+    padding: 20px 40px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+#openLetterButton:hover {
+    background-color: #e91e63;
+    color: white;
+    transform: scale(1.05);
+}
+
 .card {
     background: #ffffff;
     padding: 40px 50px;
@@ -107,12 +133,44 @@ button:hover {
 }
 
 #giftContent {
-    margin-top: 30px;
-    padding: 20px;
-    background-color: #fff4f7;
-    border-radius: 10px;
-    border: 1px dashed #e91e63;
-    animation: popIn 0.5s ease-out;
+    /* Modal Container (Overlay) */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Latar belakang gelap transparan */
+    z-index: 1000;
+    display: none; /* Hidden by default, diatur via JS nanti jadi flex */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    animation: popIn 0.4s ease-out;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-btn:hover {
+    color: #e91e63;
 }
 
 /* Animasi untuk menyembunyikan elemen pertanyaan */
@@ -151,4 +209,28 @@ button:hover {
 @keyframes beat {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.1); }
+}
+
+/* --- Responsif untuk Tampilan Handphone (Mobile) --- */
+@media (max-width: 600px) {
+    body {
+        padding: 15px; /* Kurangi padding body agar kartu lebih lebar */
+    }
+
+    .card {
+        padding: 30px 20px; /* Kurangi padding dalam kartu agar muat di layar kecil */
+    }
+
+    .title {
+        font-size: 2rem; /* Perkecil ukuran judul */
+    }
+
+    .message {
+        font-size: 0.95rem; /* Sesuaikan ukuran teks pesan agar nyaman dibaca */
+    }
+
+    #openLetterButton {
+        width: 100%; /* Tombol buka surat memenuhi lebar layar */
+        max-width: 300px;
+    }
 }

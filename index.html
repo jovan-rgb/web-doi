@@ -33,13 +33,6 @@
                     <button id="noButton">Nggak ah</button>
                 </div>
             </div>
-
-            <div id="giftContent" class="hidden">
-                <h2>Ini Dia Kejutannya!</h2>
-                <p>Setiap momen bersamamu adalah hadiah terindah. Terima kasih sudah menjadi bagian terpenting dalam hidupku.</p>
-                <p>Aku berharap bisa terus merayakan hari-hari spesial bersamamu. I love you!</p>
-                <div class="heart">❤️</div>
-            </div>
         </div>
     </div>
 
@@ -48,7 +41,19 @@
       Anda bisa menggunakan link online (URL) atau path ke file lokal.
       Contoh di bawah menggunakan link online.
     -->
-    <audio id="backgroundMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" autoplay loop></audio>
+    <audio id="backgroundMusic" src="https://cdn.pixabay.com/download/audio/2022/02/14/audio_20d3c5157e.mp3"></audio>
+
+    <!-- Pop-up Hadiah (Modal) -->
+    <div id="giftContent" class="hidden">
+        <div class="modal-content">
+            <span id="closeModal" class="close-btn">&times;</span>
+            <h2>Ini Dia Kejutannya!</h2>
+            <p>Meskipun hari ini aku dan kamu tidak dapat bersama di hari.</p>
+            <p>spesialmu, tapi ketahuilah kondisi ini nggak akan mengurangi rasa.</p>
+            <p>sayang aku ke kamu. Selamat ulang tahun pacarku. I love you!</p>
+            <div class="heart">❤️</div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="script.js"></script>

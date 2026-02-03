@@ -1,94 +1,112 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Ambil semua elemen yang kita butuhkan
     const openLetterButton = document.getElementById('openLetterButton');
     const envelope = document.getElementById('envelope');
     const card = document.querySelector('.card');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+
+    const questionSection = document.getElementById('questionSection');
     const yesButton = document.getElementById('yesButton');
     const noButton = document.getElementById('noButton');
     const giftContent = document.getElementById('giftContent');
-    const questionSection = document.getElementById('questionSection');
+    const closeModal = document.getElementById('closeModal');
 
-    openLetterButton.addEventListener('click', () => {
-        // Sembunyikan tombol/amplop dengan animasi
-        envelope.style.opacity = '0';
-        envelope.style.transition = 'opacity 0.7s ease-out';
-        envelope.addEventListener('transitionend', () => {
-            envelope.style.display = 'none';
+    // 1. Logika untuk membuka surat
+    if (openLetterButton) {
+        openLetterButton.addEventListener('click', () => {
+            // Sembunyikan amplop/tombol awal
+            if (envelope) {
+                envelope.style.display = 'none';
+            }
+            // Tampilkan kartu ucapan
+            if (card) {
+                card.classList.remove('hidden');
+            }
+            // Putar musik latar
+            if (backgroundMusic) {
+                backgroundMusic.loop = true;
+                backgroundMusic.play().catch(error => {
+                    // Browser modern mungkin memblokir autoplay, ini adalah fallback
+                    console.log("Pemutaran musik otomatis diblokir oleh browser.", error);
+                });
+            }
         });
+    }
 
-        // Tampilkan kartu dengan animasi
-        card.classList.remove('hidden');
-        card.classList.add('open-animation');
-    });
+    // Sembunyikan konten hadiah di awal
+    if (giftContent) {
+        giftContent.style.display = 'none';
+    }
 
-    // Uncomment baris di bawah untuk mengaktifkan tombol "Nggak ah" yang bergerak
-    /* noButton.addEventListener('mouseover', () => {
-    // Membuat tombol "Nggak ah" bergerak secara acak saat kursor mendekat
-    noButton.addEventListener('mouseover', () => {
-        const buttonRect = noButton.getBoundingClientRect();
-        const bodyRect = document.body.getBoundingClientRect();
-        const newTop = Math.random() * (bodyRect.height - buttonRect.height);
-        const newLeft = Math.random() * (bodyRect.width - buttonRect.width);
+    // 2. Logika untuk tombol "Nggak ah" yang bergerak
+    if (noButton) {
+        const moveButton = () => {
+            const buttonRect = noButton.getBoundingClientRect();
+            const bodyRect = document.body.getBoundingClientRect();
 
-        // Tombol perlu diposisikan secara absolut agar bisa bergerak
-        noButton.style.position = 'absolute';
-        noButton.style.top = `${newTop}px`;
-        noButton.style.left = `${newLeft}px`;
-    }); */
-    });
+            // Buat posisi acak baru di dalam layar
+            const newTop = Math.random() * (bodyRect.height - buttonRect.height);
+            const newLeft = Math.random() * (bodyRect.width - buttonRect.width);
 
-    yesButton.addEventListener('click', () => {
-        // Sembunyikan bagian pertanyaan dan tombol
-        questionSection.style.display = 'none';
+            // Tombol harus 'absolute' agar bisa dipindah posisinya
+            noButton.style.position = 'absolute';
+            noButton.style.top = `${newTop}px`;
+            noButton.style.left = `${newLeft}px`;
+        };
+
+        noButton.addEventListener('mouseover', moveButton);
         
-        // Tampilkan konten hadiah
-        giftContent.classList.remove('hidden');
-        giftContent.style.display = 'block'; // Pastikan terlihat
-        // Tambahkan animasi fade-out ke bagian pertanyaan
-        questionSection.classList.add('fade-out-animation');
+        // Tambahkan event 'touchstart' untuk support di HP (layar sentuh)
+        noButton.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Mencegah tombol ter-klik
+            moveButton();
+        });
+    }
 
-        // Efek confetti!
-        const duration = 5 * 1000;
-        const animationEnd = Date.now() + duration;
-        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-        // Setelah animasi selesai, tampilkan kejutan
-        questionSection.addEventListener('animationend', () => {
-            questionSection.style.display = 'none'; // Sembunyikan secara permanen
-            giftContent.classList.remove('hidden'); // Tampilkan konten hadiah
-
-        function randomInRange(min, max) {
-            return Math.random() * (max - min) + min;
-        }
-            // Efek confetti!
-            const duration = 5 * 1000;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-        const interval = setInterval(function() {
-            const timeLeft = animationEnd - Date.now();
-
-            if (timeLeft <= 0) {
-                return clearInterval(interval);
-            function randomInRange(min, max) {
-                return Math.random() * (max - min) + min;
+    // 3. Logika untuk tombol "Mau dong!"
+    if (yesButton) {
+        yesButton.addEventListener('click', () => {
+            // Tampilkan konten hadiah sebagai Pop-up
+            if (giftContent) {
+                giftContent.classList.remove('hidden');
+                giftContent.style.display = 'flex'; // Gunakan flex agar rata tengah
             }
 
-            const particleCount = 50 * (timeLeft / duration);
-            // Tembakkan confetti dari sisi kiri dan kanan
-            confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
-            confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
-        }, 250);
-            const interval = setInterval(function() {
-                const timeLeft = animationEnd - Date.now();
+            // Jalankan efek konfeti!
+            if (typeof confetti === 'function') {
+                const duration = 5 * 1000;
+                const animationEnd = Date.now() + duration;
+                const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
-                if (timeLeft <= 0) {
-                    return clearInterval(interval);
+                function randomInRange(min, max) {
+                    return Math.random() * (max - min) + min;
                 }
 
-                const particleCount = 50 * (timeLeft / duration);
-                // Tembakkan confetti dari sisi kiri dan kanan
-                confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
-                confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
-            }, 250);
-        }, { once: true }); // Opsi { once: true } agar event listener hanya berjalan sekali
+                const interval = setInterval(function() {
+                    const timeLeft = animationEnd - Date.now();
+                    if (timeLeft <= 0) return clearInterval(interval);
+
+                    const particleCount = 50 * (timeLeft / duration);
+                    confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+                    confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+                }, 250);
+            }
+        });
+    }
+
+    // 4. Logika untuk menutup Pop-up
+    if (closeModal) {
+        closeModal.addEventListener('click', () => {
+            if (giftContent) {
+                giftContent.style.display = 'none';
+            }
+        });
+    }
+
+    // Tutup pop-up jika user klik di luar kotak putih (di area gelap)
+    window.addEventListener('click', (e) => {
+        if (e.target === giftContent) {
+            giftContent.style.display = 'none';
+        }
     });
 });
